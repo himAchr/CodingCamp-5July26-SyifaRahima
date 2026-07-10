@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <div class="header-left">
+      <span class="app-logo">💸</span>
+      <h1 class="app-title">Expense & Budget Visualizer</h1>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+      <span class="theme-icon" id="themeIcon">🌙</span>
+    </button>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== BALANCE CARD ===== -->
+    <section class="balance-card" aria-label="Total balance">
+      <p class="balance-label">Total Spent</p>
+      <p class="balance-amount" id="totalBalance">Rp 0</p>
+      <div class="limit-row">
+        <span class="limit-label">Spending Limit:</span>
+
+        <!-- VIEW mode (default) -->
+        <div class="limit-view" id="limitView">
+          <span class="limit-display" id="limitDisplay">Not set</span>
+          <button class="btn-limit-change" id="limitChangeBtn" aria-label="Change spending limit">
+            ✏️ Change
+          </button>
+        </div>
+
+        <!-- EDIT mode (hidden until Change is clicked) -->
+        <div class="limit-edit hidden" id="limitEdit">
+          <div class="limit-input-group">
+            <span class="currency-prefix">Rp</span>
+            <input
+              type="number"
+              id="spendLimit"
+              class="limit-input"
+              placeholder="Enter amount…"
+              min="0"
+              aria-label="Set spending limit"
+            />
+          </div>
+          <div class="limit-edit-actions">
+            <button class="btn-limit-confirm" id="limitConfirmBtn">✔ Confirm</button>
+            <button class="btn-limit-cancel"  id="limitCancelBtn">✖ Cancel</button>
+          </div>
+        </div>
+      </div>
+      <p class="limit-warning hidden" id="limitWarning">
+        ⚠️ You've exceeded your spending limit!
+      </p>
+    </section>
+
+    <!-- ===== PIE CHART ===== -->
+    <section class="chart-section" aria-label="Spending by category">
+      <h2 class="section-title">Spending by Category</h2>
+      <div class="chart-wrapper">
+        <canvas id="spendingChart" aria-label="Pie chart of spending by category" role="img"></canvas>
+        <p class="chart-empty" id="chartEmpty">No transactions yet. Add one below!</p>
+      </div>
+    </section>
+
+    <!-- ===== ADD TRANSACTION FORM ===== -->
+    <section class="form-section" aria-label="Add transaction">
+      <h2 class="section-title">Add Transaction</h2>
+      <form id="transactionForm" novalidate>
+        <div class="form-group">
+          <label for="itemName">Item Name</label>
+          <input
+            type="text"
+            id="itemName"
+            placeholder="e.g. Lunch, Grab, Netflix"
+            maxlength="60"
+            autocomplete="off"
+          />
+          <span class="field-error" id="itemNameError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Amount (Rp)</label>
+          <input
+            type="number"
+            id="amount"
+            placeholder="e.g. 25000"
+            min="1"
+          />
+          <span class="field-error" id="amountError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="">-- Select category --</option>
+            <option value="Food">🍔 Food</option>
+            <option value="Transport">🚗 Transport</option>
+            <option value="Fun">🎉 Fun</option>
+          </select>
+          <span class="field-error" id="categoryError"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">+ Add Transaction</button>
+      </form>
+    </section>
+
+    <!-- ===== TRANSACTION LIST ===== -->
+    <section class="list-section" aria-label="Transaction history">
+      <div class="list-header">
+        <h2 class="section-title">Transactions</h2>
+        <div class="sort-group">
+          <label for="sortSelect" class="sort-label">Sort by:</label>
+          <select id="sortSelect" aria-label="Sort transactions">
+            <option value="date-desc">Newest first</option>
+            <option value="date-asc">Oldest first</option>
+            <option value="amount-desc">Amount ↓</option>
+            <option value="amount-asc">Amount ↑</option>
+            <option value="category-asc">Category A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <ul class="transaction-list" id="transactionList" aria-live="polite" aria-label="List of transactions">
+        <!-- items injected by JS -->
+      </ul>
+
+      <p class="list-empty" id="listEmpty">No transactions yet. Start adding above!</p>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>With ❤️ Hima &mdash; CodingCamp 2026</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
